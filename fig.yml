@@ -1,0 +1,18 @@
+redis:
+  image: redis:2.8.19
+
+ohai:
+  image: jcarlson/ohai
+  links:
+    - "redis:redis"
+
+web:
+  build: .
+  environment:
+    OHAI_SERVICE: 'http://ohai:3000'
+  ports:
+    - "3000:3000"
+  links:
+    - "ohai:ohai"
+  volumes:
+   - .:/usr/src/app
